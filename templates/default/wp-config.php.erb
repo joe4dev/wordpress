@@ -14,6 +14,8 @@
  * @package WordPress
  */
 
+<% if @ssl_enabled -%>$_SERVER['HTTPS'] = 'on';<% end -%>
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', '<%= @db_name %>');
@@ -59,7 +61,7 @@ define('NONCE_SALT',       '<%= @nonce_salt %>');
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = '<%= @db_prefix %>';
+$table_prefix = '<%= @db_prefix %>';
 
 /**
  * WordPress Localized Language, defaults to English.
@@ -82,11 +84,11 @@ define('WP_DEBUG', false);
 
 <% if @allow_multisite %>
 /* Multisite */
-define( 'WP_ALLOW_MULTISITE', true );
+define('WP_ALLOW_MULTISITE', true);
 <% end %>
 
 <% @wp_config_options.each do |key,value| %>
-define( '<%= key %>', <%= value %> );
+define('<%= key %>', <%= value %>);
 <% end %>
 
 /* That's all, stop editing! Happy blogging. */

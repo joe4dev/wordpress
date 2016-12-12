@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "wordpress::database"
+passwords = data_bag_item(node['wordpress']['creds']['databag'], 'passwords')
+node.run_state[:wordpress_user_password] = passwords['wordpress_user_password']
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 node.set_unless['wordpress']['keys']['auth'] = secure_password
@@ -67,8 +68,8 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
   variables(
     :db_name           => node['wordpress']['db']['name'],
     :db_user           => node['wordpress']['db']['user'],
-    :db_password       => node['wordpress']['db']['pass'],
-    :db_host           => node['wordpress']['db']['host'],
+    :db_password       => node.run_state[:wordpress_user_password],
+    :db_host           => node['wordpress']['db']['hosts'][0],
     :db_prefix         => node['wordpress']['db']['prefix'],
     :db_charset        => node['wordpress']['db']['charset'],
     :db_collate        => node['wordpress']['db']['collate'],
@@ -82,9 +83,11 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
     :nonce_salt        => node['wordpress']['salt']['nonce'],
     :lang              => node['wordpress']['languages']['lang'],
     :allow_multisite   => node['wordpress']['allow_multisite'],
-    :wp_config_options => node['wordpress']['wp_config_options']
+    :wp_config_options => node['wordpress']['wp_config_options'],
+    :ssl_enabled       => node['wordpress']['ssl_enabled']
   )
   owner node['wordpress']['install']['user']
   group node['wordpress']['install']['group']
+  sensitive true
   action :create
 end

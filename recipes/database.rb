@@ -20,7 +20,10 @@
 # limitations under the License.
 #
 
+db = node['wordpress']['db']
+
 mysql_client 'default' do
+  version db['mysql_version']
   action :create
   not_if { node['platform_family'] == 'windows' }
 end
@@ -29,15 +32,13 @@ mysql2_chef_gem 'default' do
   action :install
 end
 
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+passwords = data_bag_item(node['wordpress']['creds']['databag'], 'passwords')
+node.run_state[:wordpress_user_password] = passwords['wordpress_user_password']
+node.run_state[:mysql_root_password] = passwords['mysql_root_password']
+
 ::Chef::Recipe.send(:include, Wordpress::Helpers)
 
-node.set_unless['wordpress']['db']['pass'] = secure_password
-node.save unless Chef::Config[:solo]
-
-db = node['wordpress']['db']
-
-if is_local_host? db['host']
+if is_local_host? db['hosts'][0]
 
   # The following is required for the mysql community cookbook to work properly
   include_recipe 'selinux::disabled' if node['platform_family'] == 'rhel'
@@ -45,7 +46,7 @@ if is_local_host? db['host']
   mysql_service db['instance_name'] do
     port db['port']
     version db['mysql_version']
-    initial_root_password db['root_password']
+    initial_root_password node.run_state[:mysql_root_password]
     action [:create, :start]
   end
 
@@ -67,7 +68,7 @@ if is_local_host? db['host']
     :host     => 'localhost',
     :username => 'root',
     :socket   => socket,
-    :password => db['root_password']
+    :password => node.run_state[:mysql_root_password]
   }
 
   mysql_database db['name'] do
@@ -75,12 +76,14 @@ if is_local_host? db['host']
     action      :create
   end
 
-  mysql_database_user db['user'] do
-    connection    mysql_connection_info
-    password      db['pass']
-    host          db['host']
-    database_name db['name']
-    action        :create
+  db['hosts'].each do |host|
+    mysql_database_user db['user'] do
+      connection    mysql_connection_info
+      password      node.run_state[:wordpress_user_password]
+      host          host
+      database_name db['name']
+      action        :create
+    end
   end
 
   mysql_database_user db['user'] do

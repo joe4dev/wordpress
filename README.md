@@ -41,11 +41,9 @@ Attributes
 * `node['wordpress']['version']` - Version of WordPress to download. Use 'latest' to download most recent version.
 * `node['wordpress']['parent_dir']` - Parent directory to where WordPress will be extracted. (Windows Only)
 * `node['wordpress']['dir']` - Location to place WordPress files.
-* `node['wordpress']['db']['root_password']` - Root password for MySQL (added for support with community cookbook version 6+)
 * `node['wordpress']['db']['instance_name']` - Name of the MySQL instance to use with MySQL (community cookbook version 6+)
 * `node['wordpress']['db']['name']` - Name of the WordPress MySQL database.
 * `node['wordpress']['db']['user']` - Name of the WordPress MySQL user.
-* `node['wordpress']['db']['pass']` - Password of the WordPress MySQL user. By default, generated using openssl cookbook.
 * `node['wordpress']['db']['prefix']` - Prefix of all MySQL tables created by WordPress.
 * `node['wordpress']['db']['host']` - Host of the WordPress MySQL database.
 * `node['wordpress']['db']['port']` - Port of the WordPress MySQL database.
@@ -82,6 +80,7 @@ License and Author
 * Author:: Seth Chisamore (schisamo@opscode.com)
 * Author:: Lucas Hansen (lucash@opscode.com)
 * Author:: Julian C. Dunn (jdunn@getchef.com)
+* Contributor:: Antek S. Baranski (antek.baranski@gmail.com)
 
 Copyright:: 2010-2013, Chef Software, Inc.
 
