@@ -28,7 +28,6 @@ Cookbooks
 * mysql_chef_gem
 * php
 * apache2
-* iis
 * windows
 * openssl (uses library to generate secure passwords)
 * selinux (used to disable selinux for MySQL on RHEL-based systems)

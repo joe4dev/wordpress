@@ -27,30 +27,3 @@ unless platform? "windows"
 end
 
 include_recipe "wordpress::app"
-
-if platform?('windows')
-
-  include_recipe 'iis::remove_default_site'
-
-  iis_pool 'WordpressPool' do
-    no_managed_code true
-    action :add
-  end
-
-  iis_site 'Wordpress' do
-    protocol :http
-    port 80
-    path node['wordpress']['dir']
-    application_pool 'WordpressPool'
-    action [:add,:start]
-  end
-else
-  web_app "wordpress" do
-    template "wordpress.conf.erb"
-    docroot node['wordpress']['dir']
-    server_name node['wordpress']['server_name']
-    server_aliases node['wordpress']['server_aliases']
-    server_port node['wordpress']['server_port']
-    enable true
-  end
-end
