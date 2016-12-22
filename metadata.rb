@@ -10,13 +10,13 @@ version          '3.1.0'
   depends cb
 end
 
-depends 'apache2', '>= 2.0.0'
-depends 'database', '>= 1.6.0'
-depends 'mysql', '~> 8.2.0'
+depends 'apache2', '~> 3.2.2'
+depends 'database', '~> 6.1.1'
+depends 'mysql', '>= 6.0.0'
 depends 'mysql2_chef_gem', '~> 1.1.0'
-depends 'tar', '>= 0.3.1'
-depends 'php-fpm', '~> 0.6.10'
-depends 'selinux', '~> 0.7'
+depends 'tar', '~> 1.1.0'
+depends 'php-fpm', '~> 0.7.6'
+depends 'selinux', '~> 0.9.0'
 
 %w{ debian ubuntu windows centos redhat scientific oracle }.each do |os|
   supports os
