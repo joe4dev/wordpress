@@ -47,10 +47,10 @@ when 'centos', 'redhat', 'amazon', 'scientific'
   elsif node['platform_version'].to_i < 7
     default['wordpress']['db']['mysql_version'] = '5.1'
   else
-    default['wordpress']['db']['mysql_version'] = '5.5'
+    default['wordpress']['db']['mysql_version'] = '5.7'
   end
 else
-  default['wordpress']['db']['mysql_version'] = '5.5'
+  default['wordpress']['db']['mysql_version'] = '5.7'
 end
 
 default['wordpress']['allow_multisite'] = false

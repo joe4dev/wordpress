@@ -27,7 +27,7 @@ node.save unless Chef::Config['solo']
 
 db = node['wordpress']['db']
 
-include_recipe 'yum-mysql-community::mysql55'
+include_recipe 'yum-mysql-community::mysql57'
 
 mysql_client 'default' do
   version db['mysql_version']
