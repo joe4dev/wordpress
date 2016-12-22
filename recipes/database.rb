@@ -27,6 +27,8 @@ node.save unless Chef::Config['solo']
 
 db = node['wordpress']['db']
 
+include_recipe 'yum-mysql-community::mysql55'
+
 mysql_client 'default' do
   version db['mysql_version']
   action :create
@@ -75,15 +77,17 @@ if is_local_host? db['hosts'][0]
   mysql_database db['name'] do
     connection  mysql_connection_info
     action      :create
+    not_if { ::File.exist?("/var/lib/mysql-default/#{db['name']}") }
   end
 
   db['hosts'].each do |host|
     mysql_database_user db['user'] do
       connection    mysql_connection_info
-      password      db['root_password']
+      password      db['password']
       host          host
       database_name db['name']
       action        :create
+      not_if { ::File.exist?('/var/www/wordpress/wp-config.php') }
     end
   end
 
@@ -92,6 +96,7 @@ if is_local_host? db['hosts'][0]
     database_name db['name']
     privileges    [:all]
     action        :grant
+    not_if { ::File.exist?('/var/www/wordpress/wp-config.php') }
   end
 
 end

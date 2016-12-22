@@ -6,14 +6,14 @@ description      'Installs/Configures WordPress'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '3.1.0'
 
-%w{ php openssl }.each do |cb|
+%w{ php openssl yum-mysql-community }.each do |cb|
   depends cb
 end
 
 depends 'apache2', '>= 2.0.0'
 depends 'database', '>= 1.6.0'
-depends 'mysql', '~> 6.1.3'
-depends 'mysql2_chef_gem', '~> 1.0.1'
+depends 'mysql', '~> 8.2.0'
+depends 'mysql2_chef_gem', '~> 1.1.0'
 depends 'tar', '>= 0.3.1'
 depends 'php-fpm', '~> 0.6.10'
 depends 'selinux', '~> 0.7'
