@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  network:
+  - ['forwarded_port', {guest: 80, host: 8080, auto_correct: true}]
+  - ['forwarded_port', {guest: 443, host: 8443, auto_correct: true}]
   customize:
     cpus: 2
 
@@ -21,6 +24,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[wordpress::database]
-      - recipe[wordpress::nginx]
+      - recipe[wordpress::default]
     attributes:

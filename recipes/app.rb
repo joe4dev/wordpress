@@ -17,18 +17,15 @@
 # limitations under the License.
 #
 
-passwords = data_bag_item(node['wordpress']['creds']['databag'], 'passwords')
-node.run_state[:wordpress_user_password] = passwords['wordpress_user_password']
-
-::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-node.set_unless['wordpress']['keys']['auth'] = secure_password
-node.set_unless['wordpress']['keys']['secure_auth'] = secure_password
-node.set_unless['wordpress']['keys']['logged_in'] = secure_password
-node.set_unless['wordpress']['keys']['nonce'] = secure_password
-node.set_unless['wordpress']['salt']['auth'] = secure_password
-node.set_unless['wordpress']['salt']['secure_auth'] = secure_password
-node.set_unless['wordpress']['salt']['logged_in'] = secure_password
-node.set_unless['wordpress']['salt']['nonce'] = secure_password
+::Chef::Recipe.send(:include, OpenSSLCookbook::RandomPassword)
+node.default_unless['wordpress']['keys']['auth'] = random_password
+node.default_unless['wordpress']['keys']['secure_auth'] = random_password
+node.default_unless['wordpress']['keys']['logged_in'] = random_password
+node.default_unless['wordpress']['keys']['nonce'] = random_password
+node.default_unless['wordpress']['salt']['auth'] = random_password
+node.default_unless['wordpress']['salt']['secure_auth'] = random_password
+node.default_unless['wordpress']['salt']['logged_in'] = random_password
+node.default_unless['wordpress']['salt']['nonce'] = random_password
 node.save unless Chef::Config[:solo]
 
 directory node['wordpress']['dir'] do
@@ -68,7 +65,7 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
   variables(
     :db_name           => node['wordpress']['db']['name'],
     :db_user           => node['wordpress']['db']['user'],
-    :db_password       => node.run_state[:wordpress_user_password],
+    :db_password       => node['wordpress']['db']['password'],
     :db_host           => node['wordpress']['db']['hosts'][0],
     :db_prefix         => node['wordpress']['db']['prefix'],
     :db_charset        => node['wordpress']['db']['charset'],

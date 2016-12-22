@@ -25,7 +25,6 @@
 # General settings
 default['wordpress']['version'] = 'latest'
 
-default['wordpress']['creds']['databag'] = nil # You must provide your own databag with 2 encrypted passwords in it.
 default['wordpress']['db']['instance_name'] = 'default'
 default['wordpress']['db']['name'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
@@ -64,8 +63,8 @@ default['wordpress']['config_perms'] = 0644
 default['wordpress']['server_aliases'] = [node['fqdn']]
 default['wordpress']['server_port'] = '80'
 
-default['wordpress']['install']['user'] = node['nginx']['user']
-default['wordpress']['install']['group'] = node['nginx']['group']
+default['wordpress']['install']['user'] = node['apache']['user']
+default['wordpress']['install']['group'] = node['apache']['group']
 
 # Languages
 default['wordpress']['languages']['lang'] = ''
@@ -103,8 +102,7 @@ end
 
 default['wordpress']['php_options'] = { 'php_admin_value[upload_max_filesize]' => '50M', 'php_admin_value[post_max_size]' => '55M' }
 
-default['php']['ini']['cookbook'] = 'wordpress'
-default['php']['fpm_user']      = node['nginx']['user']
-default['php']['fpm_group']     = node['nginx']['group']
-default['php']['fpm_listen_user'] = node['nginx']['user']
-default['php']['fpm_listen_group'] = node['nginx']['group']
+default['php']['fpm_user']      = node['apache']['user']
+default['php']['fpm_group']     = node['apache']['group']
+default['php']['fpm_listen_user'] = node['apache']['user']
+default['php']['fpm_listen_group'] = node['apache']['group']
