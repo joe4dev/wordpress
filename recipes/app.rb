@@ -86,5 +86,5 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
   owner node['wordpress']['install']['user']
   group node['wordpress']['install']['group']
   sensitive true
-  action :create
+  action :create_if_missing
 end
