@@ -53,8 +53,11 @@ if is_local_host? db['hosts'][0]
     action [:create, :start]
   end
 
-  socket = "/var/run/mysql-#{db['instance_name']}/mysqld.sock"
+  directory '/var/run/mysqld' do
+    action :create
+  end
 
+  socket = "/var/run/mysql-#{db['instance_name']}/mysqld.sock"
   if node['platform_family'] == 'debian'
     link '/var/run/mysqld/mysqld.sock' do
       to socket
