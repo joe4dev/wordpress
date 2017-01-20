@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Docs: https://www.vagrantup.com/
+VAGRANTFILE_API_VERSION = '2'
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.hostname = 'wordpress-berkshelf'
+
+  if Vagrant.has_plugin?('vagrant-omnibus')
+    config.omnibus.chef_version = '12.8.1'
+  else
+    fail "Vagrant-omnibus plugin not installed. Please install the plugin via\n
+            `vagrant plugin install vagrant-omnibus` before continuing."
+  end
+
+  config.vm.box = 'opscode-ubuntu-14.04'
+  config.vm.box_url = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box'
+
+  config.vm.provider :virtualbox do |v|
+    v.gui = false
+
+    v.memory = 1024
+    v.cpus = 2
+  end
+
+  IP = '33.33.33.70'
+  config.vm.network :private_network, ip: IP
+
+  config.berkshelf.enabled = true
+  config.berkshelf.berksfile_path = "../Berksfile"
+
+  config.vm.provision :chef_solo do |chef|
+    chef.run_list = [
+      'recipe[apt]',
+      'recipe[wordpress::setup]'
+    ]
+
+    chef.json = {
+      wordpress: {
+        version: '4.7.1', # or 'latest'
+        site: {
+          url: "http://#{IP}"
+        },
+        plugins: {
+          # https://wordpress.org/plugins/disable-check-comment-flood/installation/
+          # disable_check_comment_flood: 'disable-check-comment-flood',
+          # https://github.com/bordoni/fakerpress
+          # fakerpress: 'https://github.com/bordoni/fakerpress/archive/0.3.1.zip'
+        }
+      }
+    }
+  end
+end
