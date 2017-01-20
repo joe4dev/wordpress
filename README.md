@@ -74,6 +74,20 @@ cd vagrant-virtualbox
 vagrant up
 ```
 
+### Amazon EC2
+
+1) Adjust `vagrant-aws/Vagrantfile`, especially:
+  * `SSH_KEY_PATH`
+  * `aws.keypair_name`
+  * `aws.security_groups` (make sure HTTP port is open!)
+
+```shell
+cd vagrant-aws
+export AWS_ACCESS_KEY_ID=???
+export AWS_SECRET_ACCESS_KEY=???
+vagrant up
+```
+
 # License and Author
 
 * Author:: Barry Steinglass (barry@opscode.com)
