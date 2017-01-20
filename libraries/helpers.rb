@@ -3,6 +3,7 @@
 # Library:: helpers
 # Author:: Yvo van Doorn <yvo@getchef.com>
 # Author:: Julian C. Dunn <jdunn@getchef.com>
+# Author:: Joel Scheuner (<joel.scheuner.dev@gmail.com>)
 #
 # Copyright 2013, Chef Software, Inc.
 #
@@ -33,6 +34,31 @@ module Wordpress
 
     def self.make_db_query(user, pass, query)
       %< --user=#{user} --password="#{pass}" --execute="#{query}">
+    end
+
+    def default_ip
+      query_public_ip
+    end
+
+    # Detects Vagrant environment based on the `/vagrant` mountpoint
+    # @returns true if in a Vagrant environment, false otherwise
+    def vagrant?
+      node['filesystem']['vagrant']['mount'] == '/vagrant' rescue false
+    end
+
+    # Detects Virtualbox environment based on ohai virtualization information
+    # @returns true if in a virtualbox environment, false otherwise
+    def virtualbox?
+      node['virtualization']['systems']['vbox'] == 'guest' rescue false
+    end
+
+    # Assuming `private_network` config with static IP in the Vagrantfile
+    def guess_virtualbox_ip
+      node['network']['interfaces']['eth1']['routes'][0]['src'] rescue nil
+    end
+
+    def query_public_ip
+      Mixlib::ShellOut.new(node['wordpress']['public_ip_query']).run_command.stdout
     end
   end
 end

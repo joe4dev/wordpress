@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: wordpress
-# Recipe:: default
+# Recipe:: setup
 # Author:: Joel Scheuner (<joel.scheuner.dev@gmail.com>)
 #
 # Copyright (C) 2017, Joel Scheuner.
@@ -19,3 +19,4 @@
 #
 
 include_recipe "wordpress::install"
+include_recipe "wordpress::install_core"

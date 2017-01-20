@@ -22,6 +22,10 @@
 # limitations under the License.
 #
 
+# Helper defaults need to be initialized first
+default['wordpress']['public_ip_query'] = 'wget http://ipecho.net/plain -O - -q'
+extend Wordpress::Helpers
+
 # General settings
 default['wordpress']['version'] = 'latest'
 
@@ -102,7 +106,27 @@ end
 
 default['wordpress']['php_options'] = { 'php_admin_value[upload_max_filesize]' => '50M', 'php_admin_value[post_max_size]' => '55M' }
 
+# PHP
 default['php']['fpm_user']      = node['apache']['user']
 default['php']['fpm_group']     = node['apache']['group']
 default['php']['fpm_listen_user'] = node['apache']['user']
 default['php']['fpm_listen_group'] = node['apache']['group']
+
+# wp-cli
+default['wordpress']['wp_cli_url'] = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
+default['wordpress']['wp_cli_bin'] = '/usr/local/bin/wp'
+
+# Wordpress site
+default['wordpress']['site']['url'] = "http://#{default_ip}"
+default['wordpress']['site']['title'] = 'My WordPress Blog'
+default['wordpress']['site']['admin_user'] = 'admin'
+default['wordpress']['site']['admin_password'] = 'admin'
+default['wordpress']['site']['admin_email'] = 'admin@example.com'
+
+# Plugins
+default['wordpress']['plugins'] = {
+  ## Example by name: [id]: [plugin_name]
+# disable_check_comment_flood: 'disable-check-comment-flood',
+  ## Example by url: [id]: [plugin_url]
+# fakerpress: 'https://github.com/bordoni/fakerpress/archive/0.3.1.zip'
+}

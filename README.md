@@ -1,28 +1,19 @@
-[![Build Status](https://travis-ci.org/brint/wordpress-cookbook.svg?branch=master)](https://travis-ci.org/brint/wordpress-cookbook)
-[![Dependency Status](https://gemnasium.com/brint/wordpress-cookbook.svg)](https://gemnasium.com/brint/wordpress-cookbook)
-
-Description
-===========
+# Description
 
 The Chef WordPress cookbook installs and configures WordPress according to the instructions at http://codex.wordpress.org/Installing_WordPress.
 
-Description
-===========
+Additionally, the `setup` recipe of this cookbook uses the WordPress CLI (http://wp-cli.org/) to install the WordPress core blog.
+For manual setup, use the `install` recipe and go to: http://HOSTNAME:80/wp-admin/install.php
 
-This cookbook does not set up the WordPress blog. You will need to do this manually by going to http://hostname/wp-admin/install.php (this URL may be different if you change the attribute values).
+# Requirements
 
-Requirements
-============
-
-Platform
---------
+## Platform
 
 * Ubuntu 12.04, 14.04
 * RHEL/CentOS 5, 6
 * Windows
 
-Cookbooks
----------
+## Cookbooks
 
 * mysql
 * mysql_chef_gem
@@ -32,8 +23,7 @@ Cookbooks
 * openssl (uses library to generate secure passwords)
 * selinux (used to disable selinux for MySQL on RHEL-based systems)
 
-Attributes
-==========
+# Attributes
 
 ### WordPress
 
@@ -66,13 +56,39 @@ Attributes
 
 * `node['wordpress']['php_options']` - Additional PHP settings for the installation.
 
-Usage
-=====
+See `attributes/default.rb` for further details and examples.
+
+# Usage
 
 Add the "wordpress" recipe to your node's run list or role, or include the recipe in another cookbook.
 
-License and Author
-==================
+## Vagrant
+
+1) Install Vagrant: https://www.vagrantup.com/
+2) Install the Vagrant plugin `vagrant-omnibus` via `vagrant plugin install vagrant-omnibus`
+
+### Virtualbox
+
+```shell
+cd vagrant-virtualbox
+vagrant up
+```
+
+### Amazon EC2
+
+1) Adjust `vagrant-aws/Vagrantfile`, especially:
+  * `SSH_KEY_PATH`
+  * `aws.keypair_name`
+  * `aws.security_groups` (make sure HTTP port is open!)
+
+```shell
+cd vagrant-aws
+export AWS_ACCESS_KEY_ID=???
+export AWS_SECRET_ACCESS_KEY=???
+vagrant up
+```
+
+# License and Author
 
 * Author:: Barry Steinglass (barry@opscode.com)
 * Author:: Joshua Timberman (joshua@opscode.com)
@@ -80,6 +96,7 @@ License and Author
 * Author:: Lucas Hansen (lucash@opscode.com)
 * Author:: Julian C. Dunn (jdunn@getchef.com)
 * Contributor:: Antek S. Baranski (antek.baranski@gmail.com)
+* Contributor:: Joel Scheuner (joel.scheuner.dev@gmail.com)
 
 Copyright:: 2010-2013, Chef Software, Inc.
 

@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@opscode.com'
 license          'Apache 2.0'
 description      'Installs/Configures WordPress'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '3.1.0'
+version          '3.2.0'
 
 %w{ php openssl yum-mysql-community }.each do |cb|
   depends cb
