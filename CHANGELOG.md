@@ -1,4 +1,14 @@
-CHANGELOG
+# CHANGELOG
+
+v3.2.0 (2017-01-20)
+-------------------
+
+### New Feature
+* Add `setup` recipe to install both: WordPress (see `install`) and the WordPress core (see `install_core`) via WordPress CLI.
+
+### Bug
+* Fix reprovisioning after VM restart (observed on Ubuntu 14.04)
+* Fix to enable wordpress apache config
 
 v3.0.0 (2015-02-24)
 -------------------

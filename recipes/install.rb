@@ -1,9 +1,8 @@
 #
 # Cookbook Name:: wordpress
-# Recipe:: default
-# Author:: Joel Scheuner (<joel.scheuner.dev@gmail.com>)
+# Recipe:: install
 #
-# Copyright (C) 2017, Joel Scheuner.
+# Copyright 2017, Joel Scheuner.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,4 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "wordpress::install"
+# mod_php5 (used by Wordpress) requires non-threaded MPM such as prefork
+# @see apache2/recipes/mod_php5.rb:22
+# @see attributes https://github.com/svanzoest-cookbooks/apache2/#prefork-attributes
+# A warning is yielded otherwise during the Chef run
+node.default['apache']['mpm'] = 'prefork'
+
+include_recipe "wordpress::database"
+include_recipe "wordpress::apache"
