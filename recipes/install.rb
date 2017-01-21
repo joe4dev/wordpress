@@ -23,5 +23,6 @@
 # A warning is yielded otherwise during the Chef run
 node.default['apache']['mpm'] = 'prefork'
 
+include_recipe "apt"
 include_recipe "wordpress::database"
 include_recipe "wordpress::apache"
