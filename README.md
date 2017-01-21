@@ -88,6 +88,14 @@ export AWS_SECRET_ACCESS_KEY=???
 vagrant up
 ```
 
+## TestKitchen
+
+http://kitchen.ci/
+
+```shell
+kitchen verify
+```
+
 # License and Author
 
 * Author:: Barry Steinglass (barry@opscode.com)
