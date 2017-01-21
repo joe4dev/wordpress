@@ -13,7 +13,7 @@ describe "wordpress::install" do
     expect(service("apache2")).to be_running
   end
 
-  describe command('wget http://33.33.33.71 -O - -q') do
+  describe command('wget http://33.33.33.72 -O - -q') do
     its(:stdout) { should contain('My WordPress Blog') }
   end
 end
