@@ -10,7 +10,7 @@ version          '3.2.0'
   depends cb
 end
 
-depends 'apt', '~> 5.0.1'
+depends 'apt', '>= 0.0.0'
 depends 'apache2', '~> 3.2.2'
 depends 'database', '~> 6.1.1'
 depends 'mysql', '>= 6.0.0'
